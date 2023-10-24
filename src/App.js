@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import * as marked from 'marked';
+
+
+marked.setOptions({
+  breaks: true
+});
+const renderedText = new marked.Renderer();
 
 function App() {
+
+  const [text, setText] = useState("");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+    <div className="App text-center px-2">
+      <h1 className='p-3'>Markdown Previewer</h1>
+   <textarea value={text} className='textarea' style={{height: "300px", width: "600px"}} onChange={(e)=> setText(e.target.value)}></textarea>
+<h2 className='mt-2'>Preview</h2>
+
+<Preview markdown={text}/>
+
     </div>
   );
 }
 
+function Preview({markdown}){
+ return (<div dangerouslySetInnerHTML={{__html:marked(markdown, {Renderer: renderedText})}} id="preview">
+
+  </div>);
+}
 export default App;
